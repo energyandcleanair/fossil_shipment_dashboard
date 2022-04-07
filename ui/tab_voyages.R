@@ -1,4 +1,4 @@
-tabPanel("Shipments",
+tabPanel("Map",
          value="shipments",
 
          sidebarLayout(
@@ -13,6 +13,9 @@ tabPanel("Shipments",
 
            # h4("Presets"),
            # uiOutput("selectBerth"),
+           div(HTML("<br>")),
+           # h4("Statistics"),
+           # uiOutput("statistics"),
 
            downloadButton(outputId="downloadGeojson","Download (.geojson)",class="btn-secondary"),
            downloadButton(outputId="downloadCsv","Download (.csv)",class="btn-secondary")

@@ -3,6 +3,7 @@ library(shinyWidgets)
 library(shinycssloaders)
 library(countrycode)
 library(dplyr)
+library(RColorBrewer)
 library(shinyURL)
 library(rclipboard)
 library(leaflet)
@@ -19,4 +20,5 @@ commodity_groups <- c("crude_oil"="Crude oil",
                       "oil_products"="Oil products",
                       "oil_or_chemical"="Oil products",
                       "lng"="LNG",
-                      "bulk"="Bulk")
+                      "coal"="Coal",
+                      "bulk"="Bulk (ex. coal)")

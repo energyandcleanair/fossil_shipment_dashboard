@@ -26,10 +26,10 @@ output$downloadCsv <- downloadHandler(
 )
 
 output$selectCommodity <- renderUI({
-  commodities <- c("crude_oil","oil_or_chemical","oil_products","lng","bulk")
+  commodities <- c("crude_oil","oil_or_chemical","oil_products","lng","bulk","coal")
   selectInput("commodity", NULL,
                 multiple=T,
-                choices=c("crude_oil","oil_or_chemical","oil_products","lng","bulk"),
+                choices=c("crude_oil","oil_or_chemical","oil_products","lng","bulk","coal"),
                 selected=commodities)
   })
 
@@ -50,15 +50,23 @@ voyages <- reactive({
     # filter(commodity %in% input$commodity) %>%
     mutate(quantity_unit=sprintf("%s %s", quantity, unit)) %>%
     select(id,
+           status,
            departure=departure_date_utc,
+           departure_port=departure_port_name,
+           departure_berth=departure_berth_name,
            arrival=arrival_date_utc,
-           destination=arrival_iso2,
+           arrival_port=arrival_port_name,
+           arrival_berth=arrival_berth_name,
+           arrival_iso2=arrival_iso2,
+           destination_iso2=destination_iso2,
            imo=ship_imo,
            type=ship_type,
            subtype=ship_subtype,
+           dwt=ship_dwt,
            commodity=commodity,
-           quantity=quantity_unit,
-           berth=arrival_berth_name
+           quantity_unit=quantity_unit,
+           quantity,
+           unit
     )
 })
 
@@ -73,15 +81,23 @@ voyages_sf <- reactive({
     # filter(commodity %in% input$commodity) %>%
     mutate(quantity_unit=sprintf("%s %s", quantity, unit)) %>%
     select(id,
+           status,
            departure=departure_date_utc,
+           departure_port=departure_port_name,
+           departure_berth=departure_berth_name,
            arrival=arrival_date_utc,
-           destination=arrival_iso2,
+           arrival_port=arrival_port_name,
+           arrival_berth=arrival_berth_name,
+           arrival_iso2=arrival_iso2,
+           destination_iso2=destination_iso2,
            imo=ship_imo,
            type=ship_type,
            subtype=ship_subtype,
+           dwt=ship_dwt,
            commodity=commodity,
-           quantity=quantity_unit,
-           berth=arrival_berth_name
+           quantity_unit=quantity_unit,
+           quantity,
+           unit
            )
 })
 
@@ -99,7 +115,9 @@ output$map_voyages <- renderLeaflet({
     addTiles(group = "OpenStreetmap") %>%
     addProviderTiles('Esri.WorldImagery', group = "Satellite")
 
-  v <- v %>% mutate(commodity=recode(commodity, !!!commodity_groups))
+  v <- v %>%
+    mutate(commodity=recode(commodity, !!!commodity_groups)) %>%
+    filter(!sf::st_is_empty(geometry))
   for(v_commodity in split(v, v$commodity)){
     leaflet <- leaflet %>%
       addPolylines(data = v_commodity,
@@ -123,7 +141,7 @@ output$map_voyages <- renderLeaflet({
 
 
 output$table_voyages <- renderDataTable({
-  DT::datatable(voyages(),
+  DT::datatable(voyages() %>% select(-c(quantity, unit)),
                 selection = "single",
                 rownames = FALSE,
                 options=list(stateSave = TRUE,
