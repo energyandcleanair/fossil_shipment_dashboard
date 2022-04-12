@@ -121,6 +121,7 @@ output$plot_voyages_bars <- renderPlotly({
   add_trailing <- function(x) paste0(x, "   ")  # Tweak to prevent cut legend...
   d$destination_region <- factor(add_trailing(d$destination_region), levels=rev(add_trailing(levels(d$destination_region))))
 
+
   d <- d %>%
     group_by(destination_region, date, commodity, unit) %>%
     summarise(quantity=sum(quantity, na.rm=T))
