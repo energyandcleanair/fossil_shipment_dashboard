@@ -119,7 +119,7 @@ output$plot_voyages_bars <- renderPlotly({
     mutate(commodity = sprintf("%s - %s", commodity, unit))
 
   add_trailing <- function(x) paste0(x, "   ")  # Tweak to prevent cut legend...
-  d$destination_region <- factor(add_trailing(d$destination_region), levels=rev(add_trailing(c(identified_regions,"Other"))))
+  d$destination_region <- factor(add_trailing(d$destination_region), levels=rev(add_trailing(c(unique(d$destination_region),"Other"))))
 
   d <- d %>%
     group_by(destination_region, date, commodity, unit) %>%
