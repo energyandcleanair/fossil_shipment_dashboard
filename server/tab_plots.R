@@ -88,7 +88,7 @@ output$plot_voyages_lines <- renderPlotly({
 
   # Add 0s and rolling average
   d <- d %>%
-    rcrea::utils.running_average(7, vars_to_avg = c("quantity","dwt"))
+    rcrea::utils.running_average(7, vars_to_avg = c("quantity","dwt"), min_values = 5)
 
   colourCount = length(unique(d$commodity))
   getPalette = colorRampPalette(brewer.pal(12, "Paired"))
@@ -99,7 +99,7 @@ output$plot_voyages_lines <- renderPlotly({
     facet_wrap(~destination_region, nrow=3) +
     rcrea::theme_crea() +
     scale_y_continuous(limits=c(0, NA), expand=expansion(mult=c(0, 0.1))) +
-    scale_x_date(date_labels = "%b %Y", limits=c(as.Date("2022-01-01"), NA)) +
+    scale_x_date(date_labels = "%b %Y", limits=c(as.Date("2021-12-01"), NA)) +
     scale_color_manual(values = getPalette(colourCount), name=NULL) +
     labs(x=sprintf("%s date", tools::toTitleCase(input$arrival_or_departure)),
          y="tonnage")
