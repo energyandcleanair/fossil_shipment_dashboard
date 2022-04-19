@@ -48,7 +48,7 @@ voyages <- reactive({
   req(all_voyages())
   all_voyages() %>%
     # filter(commodity %in% input$commodity) %>%
-    mutate(quantity_unit=sprintf("%s %s", quantity, unit)) %>%
+    mutate(quantity_unit=sprintf("%s tonne", value_tonne)) %>%
     select(id,
            status,
            departure=departure_date_utc,
@@ -65,9 +65,8 @@ voyages <- reactive({
            dwt=ship_dwt,
            commodity=commodity,
            quantity_unit=quantity_unit,
-           quantity,
-           unit
-    )
+           value_tonne,
+           value_m3)
 })
 
 all_voyages_sf <- reactive({
@@ -79,7 +78,7 @@ voyages_sf <- reactive({
   req(all_voyages_sf())
   all_voyages_sf() %>%
     # filter(commodity %in% input$commodity) %>%
-    mutate(quantity_unit=sprintf("%s %s", quantity, unit)) %>%
+    mutate(quantity_unit=sprintf("%s tonne", value_tonne)) %>%
     select(id,
            status,
            departure=departure_date_utc,
@@ -96,9 +95,8 @@ voyages_sf <- reactive({
            dwt=ship_dwt,
            commodity=commodity,
            quantity_unit=quantity_unit,
-           quantity,
-           unit
-           )
+           value_tonne,
+           value_m3)
 })
 
 berths_sf <- reactive({
@@ -141,7 +139,7 @@ output$map_voyages <- renderLeaflet({
 
 
 output$table_voyages <- renderDataTable({
-  DT::datatable(voyages() %>% select(-c(quantity, unit)),
+  DT::datatable(voyages(),
                 selection = "single",
                 rownames = FALSE,
                 options=list(stateSave = TRUE,

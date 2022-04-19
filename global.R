@@ -21,4 +21,7 @@ commodity_groups <- c("crude_oil"="Crude oil",
                       "oil_or_chemical"="Oil products",
                       "lng"="LNG",
                       "coal"="Coal",
-                      "bulk"="Bulk (ex. coal)")
+                      "bulk_not_coal"="Other",
+                      "general_cargo"="Other",
+                      "lpg"="Other"
+                      )

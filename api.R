@@ -14,7 +14,7 @@ api.get_voyages <- function(date_from=NULL){
 
 api.get_voyages_sf <- function(date_from=NULL){
   # Can be quite slow
-  url <- sprintf("https://fossil-shipment-tracker.ew.r.appspot.com/v0/voyage?format=geojson&nest_in_data=False")
+  url <- sprintf("https://fossil-shipment-tracker.ew.r.appspot.com/v0/voyage?date_from=2022-02-24&format=geojson&nest_in_data=False")
   tryCatch({geojsonsf::geojson_sf(url(url)) %>%
       filter(departure_iso2=="RU",
              (arrival_iso2!="RU" | is.na(arrival_iso2)))},

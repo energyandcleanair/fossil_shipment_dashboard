@@ -46,8 +46,9 @@ plot_data <- reactive({
   }
 
   d <- d %>%
-    mutate(quantity = ifelse(unit=="tonne", quantity/1000, quantity),
-    unit = ifelse(unit=="tonne", "thousand tonne", unit)) %>%
+    # mutate(quantity = ifelse(unit=="tonne", quantity/1000, quantity),
+    # unit = ifelse(unit=="tonne", "thousand tonne", unit)) %>%
+    mutate(quantity=value_tonne/1000, unit="thousand tonne") %>%
     mutate(commodity = recode(commodity, !!!commodities)) %>%
     filter(!grepl("bulk|lpg|oil_or_ore", commodity, ignore.case = T))
 
