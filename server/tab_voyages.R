@@ -40,7 +40,7 @@ output$selectCommodity <- renderUI({
 # Reactive Elements --------------------------------------
 
 all_voyages <- reactive({
-  api.get_voyages()
+  api.get_voyages(date_from="2021-12-01")
 })
 
 voyages <- reactive({
@@ -70,7 +70,7 @@ voyages <- reactive({
 })
 
 all_voyages_sf <- reactive({
-  api.get_voyages_sf()
+  api.get_voyages_sf(date_from="2021-12-01")
 })
 
 voyages_sf <- reactive({
